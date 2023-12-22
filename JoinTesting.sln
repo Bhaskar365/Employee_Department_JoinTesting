@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoinTesting", "JoinTesting.csproj", "{BCBC4786-A3A9-4156-8EE4-09B662086ADE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoinTesting.Models", "..\JoinTesting.Models\JoinTesting.Models.csproj", "{987B7CCB-88AB-44A1-8B29-651767D3BB76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCBC4786-A3A9-4156-8EE4-09B662086ADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCBC4786-A3A9-4156-8EE4-09B662086ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCBC4786-A3A9-4156-8EE4-09B662086ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCBC4786-A3A9-4156-8EE4-09B662086ADE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987B7CCB-88AB-44A1-8B29-651767D3BB76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987B7CCB-88AB-44A1-8B29-651767D3BB76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987B7CCB-88AB-44A1-8B29-651767D3BB76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987B7CCB-88AB-44A1-8B29-651767D3BB76}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AFEEAE5D-4A42-40B6-B3B2-D8F491AC3A6F}
+	EndGlobalSection
+EndGlobal
