@@ -71,5 +71,49 @@ namespace JoinTesting.Controllers
             }
             return Ok("Successfully created");
         }
+
+        [HttpPut("{depID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateDepartment(int depID, [FromBody] Department dep) 
+        {
+            if (dep == null)
+                return BadRequest(ModelState);
+
+            if (depID != dep.Id)
+                return BadRequest(ModelState);
+
+            if (!_departmentRepository.DepartmentExists(depID))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if (!_departmentRepository.UpdateDepartment(dep)) 
+            {
+                ModelState.AddModelError("","Something went wrong while updating department");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{depID}")]
+        public IActionResult DeleteDepartment(int depID) 
+        {
+            if (!_departmentRepository.DepartmentExists(depID))
+                return NotFound();
+
+            var departmentToDelete = _departmentRepository.GetDepartment(depID);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_departmentRepository.DeleteDepartment(departmentToDelete)) 
+            {
+                ModelState.AddModelError("","Something went wrong while deleting departments");
+            }
+            return NoContent();
+        }
     }
 }
