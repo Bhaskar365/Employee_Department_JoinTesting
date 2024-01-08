@@ -1,4 +1,5 @@
-﻿using JoinTesting.Interface;
+﻿using JoinTesting.DbClass;
+using JoinTesting.Interface;
 using JoinTesting.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,14 +11,16 @@ namespace JoinTesting.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        private readonly IDepartmentRepository _departmentRepository;
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Employee>))]
-        public IActionResult GetAllEmployees() 
+        public IActionResult GetAllEmployees()
         {
             var employees = _employeeRepository.GetAllEmployees();
 
@@ -33,7 +36,7 @@ namespace JoinTesting.Controllers
         [HttpGet("{empID}")]
         [ProducesResponseType(200, Type = typeof(Employee))]
         [ProducesResponseType(400)]
-        public IActionResult GetEmployee(int id) 
+        public IActionResult GetEmployee(int id)
         {
             if (!_employeeRepository.EmployeeExists(id))
                 return NotFound();
@@ -49,9 +52,24 @@ namespace JoinTesting.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateEmployee([FromBody] Employee emp, [FromQuery] Department department) 
+        public IActionResult CreateEmployee([FromBody] Employee emp, [FromQuery] Department department)
         {
-            var departmentValue = 
+            //var departmentValue = _context.Tbl_Department.FirstOrDefault(d => d.DepartmentId.ToString() == emp.EmpId);
+
+            var departmentValue = _departmentRepository.GetAllDepartments().Where(d => d.DepartmentId.ToString() == emp.EmpId);
+
+            if (department == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return StatusCode(422, ModelState);
+
+            if (!_employeeRepository.CreateEmployee(emp))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully added");
         }
     }
 }

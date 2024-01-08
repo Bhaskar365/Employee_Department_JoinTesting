@@ -14,7 +14,7 @@ namespace JoinTesting.Controllers
             _departmentRepository = departmentRepository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllDepartments")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Department>))]
         public IActionResult GetAllDepartments()
         {
@@ -32,12 +32,12 @@ namespace JoinTesting.Controllers
         [HttpGet("{depId}")]
         [ProducesResponseType(200, Type = typeof(Department))]
         [ProducesResponseType(400)]
-        public IActionResult GetDepartment(int departmentId)
+        public IActionResult GetDepartment(int depId)
         {
-            if (_departmentRepository.DepartmentExists(departmentId))
+            if (!_departmentRepository.DepartmentExists(depId))
                 return NotFound();
 
-            var department = _departmentRepository.GetDepartment(departmentId);
+            var department = _departmentRepository.GetDepartment(depId);
 
             if (department == null)
                 return NotFound();
@@ -81,7 +81,7 @@ namespace JoinTesting.Controllers
             if (dep == null)
                 return BadRequest(ModelState);
 
-            if (depID != dep.Id)
+            if (depID != dep.DepartmentId)
                 return BadRequest(ModelState);
 
             if (!_departmentRepository.DepartmentExists(depID))
