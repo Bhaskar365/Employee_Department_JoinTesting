@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JoinTesting.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240108161259_migr1")]
-    partial class migr1
+    [Migration("20240109164535_thirdMig")]
+    partial class thirdMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,31 +51,28 @@ namespace JoinTesting.Migrations
 
             modelBuilder.Entity("JoinTesting.Models.Department", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DepartmentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"), 1L, 1);
 
                     b.Property<string>("DepartmentName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("DepartmentId");
 
                     b.ToTable("Tbl_Department");
                 });
 
             modelBuilder.Entity("JoinTesting.Models.Employee", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EmpId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpId"), 1L, 1);
 
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
@@ -90,10 +87,6 @@ namespace JoinTesting.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmpId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -112,7 +105,7 @@ namespace JoinTesting.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("EmpId");
 
                     b.HasIndex("AddressId");
 

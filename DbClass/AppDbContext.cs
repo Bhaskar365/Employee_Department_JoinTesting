@@ -12,10 +12,13 @@ namespace JoinTesting.DbClass
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>()
+                    .HasKey(e => e.EmpId); 
+
+            modelBuilder.Entity<Employee>()
                 .HasOne(e => e.Department)
-                .WithMany()  
+                .WithMany()
                 .HasForeignKey(e => e.DepartmentId)
-                .IsRequired();  
+                .IsRequired();
         }
     }
 }

@@ -7,7 +7,6 @@ namespace JoinTesting.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //testing text for commit test
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -52,24 +51,68 @@ namespace JoinTesting.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateEmployee([FromBody] Employee emp, [FromQuery] Department department)
+        public IActionResult CreateEmployee([FromBody] Employee emp)
         {
-            //var departmentValue = _context.Tbl_Department.FirstOrDefault(d => d.DepartmentId.ToString() == emp.EmpId);
-
-            var departmentValue = _departmentRepository.GetAllDepartments().Where(d => d.DepartmentId.ToString() == emp.EmpId);
-
-            if (department == null)
+            if (emp == null)
                 return BadRequest(ModelState);
 
-            if (!ModelState.IsValid)
-                return StatusCode(422, ModelState);
+            if (!_departmentRepository.DepartmentExists(emp.DepartmentId))
+                return BadRequest("Invalid DepartmentId");
 
+            // Validate other fields if needed
+
+            emp.CreatedOn = DateTime.UtcNow;
+
+            // Retrieve the associated department
+            var department = _departmentRepository.GetDepartment(emp.DepartmentId);
+            if (department == null)
+            {
+                ModelState.AddModelError("", "Department not found");
+                return BadRequest(ModelState);
+            }
+
+            // Associate the department with the employee
+            emp.Department = department;
+
+            // Save the employee
             if (!_employeeRepository.CreateEmployee(emp))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
+
             return Ok("Successfully added");
+        }
+
+        [HttpPut("{empId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateEmployee(int empId, [FromQuery] int depID, [FromBody] Employee employee) 
+        {
+            if (employee == null)
+                return BadRequest(ModelState);
+
+            var dep = _departmentRepository.GetDepartment(depID);
+
+            if (dep.DepartmentId != depID)
+                return BadRequest(ModelState);
+
+            if (_departmentRepository.DepartmentExists(depID))
+                return NotFound();
+
+            if (empId != employee.EmpId)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if (_employeeRepository.UpdateEmployee(employee, depID)) 
+            {
+                ModelState.AddModelError("", "Something went wrong while updating owner");
+                return StatusCode(500, ModelState);
+            }
+            return NoContent();
         }
     }
 }

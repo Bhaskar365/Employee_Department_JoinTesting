@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace JoinTesting.Migrations
 {
-    public partial class migr1 : Migration
+    public partial class thirdMig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,23 +29,21 @@ namespace JoinTesting.Migrations
                 name: "Tbl_Department",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    DepartmentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DepartmentId = table.Column<int>(type: "int", nullable: false),
                     DepartmentName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_Department", x => x.Id);
+                    table.PrimaryKey("PK_Tbl_Department", x => x.DepartmentId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Tbl_Employee",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    EmpId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmpId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -58,7 +56,7 @@ namespace JoinTesting.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tbl_Employee", x => x.Id);
+                    table.PrimaryKey("PK_Tbl_Employee", x => x.EmpId);
                     table.ForeignKey(
                         name: "FK_Tbl_Employee_Address_AddressId",
                         column: x => x.AddressId,
@@ -69,7 +67,7 @@ namespace JoinTesting.Migrations
                         name: "FK_Tbl_Employee_Tbl_Department_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Tbl_Department",
-                        principalColumn: "Id",
+                        principalColumn: "DepartmentId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
